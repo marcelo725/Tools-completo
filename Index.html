@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>AI Tools Hub</title>
+<style>
+:root{
+  --bg:#090b12;--panel:#111522;--panel2:#171c2c;
+  --line:#282f43;--text:#f4f5ff;--muted:#9ba5bd;
+  --purple:#8b70ff;--blue:#5ca9ff;--green:#55d6a1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:#090b12ed;
+backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{max-width:1150px;margin:auto;padding:15px 20px;
+display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:19px;font-weight:850;letter-spacing:-.7px}
+.logo span{color:var(--purple)}
+.pill{border:1px solid var(--line);border-radius:30px;
+padding:7px 11px;color:var(--muted);font-size:12px}
+main{max-width:1150px;margin:auto;padding:30px 20px 70px}
+.hero{text-align:center;padding:38px 0 30px}
+.eyebrow{color:#b7a7ff;font-size:12px;font-weight:750;
+letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,57px);line-height:1.08;
+letter-spacing:-2px;margin:15px 0}
+h1 span{background:linear-gradient(100deg,#a48bff,#6cc8ff);
+-webkit-background-clip:text;color:transparent}
+p{color:var(--muted);line-height:1.65}
+.hero p{max-width:570px;margin:0 auto}
+.search{display:flex;gap:9px;max-width:650px;margin:25px auto 0}
+input,select,textarea{background:var(--panel);border:1px solid var(--line);
+color:var(--text);border-radius:12px;padding:13px;outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+.search input{flex:1;width:100%}
+.btn{border:0;border-radius:11px;padding:12px 16px;
+background:var(--purple);color:white;font-weight:750}
+.btn.secondary{background:var(--panel2);border:1px solid var(--line)}
+.section{margin-top:37px}
+.section-head{display:flex;align-items:center;justify-content:space-between;
+gap:12px;flex-wrap:wrap;margin-bottom:16px}
+h2{font-size:22px;margin:0;letter-spacing:-.5px}
+h3{font-size:16px;margin:0}
+.small{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.category,.ai-card,.chatbox{border:1px solid var(--line);
+background:var(--panel);border-radius:17px}
+.category{padding:17px;text-align:left;color:var(--text);transition:.2s}
+.category:hover,.ai-card:hover{border-color:#7762cf;transform:translateY(-2px)}
+.cat-icon{width:43px;height:43px;border-radius:13px;
+display:grid;place-items:center;background:#22203b;font-size:22px;margin-bottom:13px}
+.category p{font-size:12px;margin:7px 0 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar input{flex:1;min-width:140px}
+.toolbar select{max-width:180px;width:100%}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ai-card{padding:15px;min-width:0}
+.ai-top{display:flex;gap:10px;align-items:center}
+.ai-logo{width:43px;height:43px;border-radius:12px;
+display:grid;place-items:center;background:var(--panel2);
+font-weight:850;font-size:18px;flex-shrink:0}
+.ai-top>div:nth-child(2){min-width:0;flex:1}
+.ai-top h3{overflow-wrap:anywhere}
+.tag{display:inline-block;border-radius:6px;padding:4px 7px;
+font-size:10px;font-weight:750;margin-top:7px;background:#20263a;color:#c3c9dc}
+.tag.free{background:#153528;color:#79e8b6}
+.tag.paid{background:#3a2a1d;color:#ffc88d}
+.ai-card p{font-size:13px;min-height:42px}
+.card-actions{display:flex;gap:7px}
+.card-actions button{flex:1;padding:10px 5px;font-size:12px}
+.empty{grid-column:1/-1;padding:30px;text-align:center;
+border:1px dashed var(--line);border-radius:15px;color:var(--muted)}
+#chatSection{scroll-margin-top:80px}
+.chatbox{overflow:hidden}
+.chat-head{padding:15px;border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chat-head select{max-width:210px;width:55%;padding:10px}
+.messages{padding:16px;min-height:200px;max-height:420px;overflow-y:auto}
+.msg{padding:12px 14px;border-radius:13px;margin:10px 0;
+max-width:90%;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55}
+.msg.assistant{background:var(--panel2);border:1px solid var(--line)}
+.msg.user{background:#29234c;margin-left:auto}
+.composer{padding:12px;border-top:1px solid var(--line)}
+.composer textarea{width:100%;resize:vertical;min-height:75px}
+.composer-bottom{display:flex;justify-content:space-between;
+align-items:center;gap:10px;margin-top:8px}
+.status{font-size:12px;color:var(--muted)}
+.notice{border:1px solid #4a3c23;background:#241e15;
+color:#f5d4a4;border-radius:12px;padding:12px;font-size:12px;line-height:1.6}
+footer{text-align:center;padding:28px 15px;border-top:1px solid var(--line);
+color:var(--muted);font-size:12px}
+.hidden{display:none!important}
+@media(min-width:650px){
+.grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:950px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:400px){
+main{padding:20px 13px 45px}.nav{padding:13px}
+.grid{gap:8px}.category{padding:12px}.cards{gap:8px}
+.ai-card{padding:11px}.search{flex-wrap:wrap}
+.search input{flex-basis:100%}.hero{padding-top:25px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="logo">AI Tools <span>Hub</span></div>
+    <button class="btn secondary" onclick="showChat()">Abrir chat ↗</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Seu espaço de inteligência artificial</div>
+    <h1>Uma central para<br><span>todas as suas ideias.</span></h1>
+    <p>Encontre ferramentas, explore categorias e escolha a IA ideal para cada tarefa.</p>
+    <div class="search">
+      <input id="globalSearch" placeholder="Buscar IA, categoria ou tarefa..."
+      aria-label="Buscar ferramentas" oninput="renderCatalog()">
+      <button class="btn" onclick="goCatalog()">Explorar IAs</button>
+    </div>
+  </section>
+
+  <section class="section" id="categoriesSection">
+    <div class="section-head">
+      <h2>O que você quer fazer?</h2>
+      <span class="small">Escolha uma categoria</span>
+    </div>
+    <div class="grid" id="categories"></div>
+  </section>
+
+  <section class="section" id="catalogSection">
+    <div class="section-head">
+      <h2 id="catalogTitle">Explorar ferramentas</h2>
+      <span class="small" id="resultCount"></span>
+    </div>
+    <div class="toolbar">
+      <input id="catalogSearch" placeholder="Pesquisar ferramentas..."
+      oninput="renderCatalog()">
+      <select id="categoryFilter" onchange="renderCatalog()">
+        <option value="">Todas as categorias</option>
+      </select>
+      <select id="priceFilter" onchange="renderCatalog()">
+        <option value="">Todos os preços</option>
+        <option value="free">Gratuita / plano grátis</option>
+        <option value="paid">Paga / assinatura</option>
+        <option value="both">Grátis e paga</option>
+      </select>
+    </div>
+    <div class="cards" id="catalog" style="margin-top:14px"></div>
+  </section>
+
+  <section class="section" id="chatSection">
+    <div class="section-head">
+      <h2>Seu espaço de conversa</h2>
+      <span class="small">Escolha a IA</span>
+    </div>
+    <div class="chatbox">
+      <div class="chat-head">
+        <div>
+          <strong id="selectedName">ChatGPT</strong>
+          <div class="small">Seletor de ferramentas</div>
+        </div>
+        <select id="chatAI" onchange="selectAI(this.value)"
+        aria-label="Escolher inteligência artificial"></select>
+      </div>
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="msg assistant">Olá! 👋 Escolha uma IA no menu acima. Quando conectarmos o backend, você poderá conversar com o modelo escolhido aqui mesmo.</div>
+      </div>
+      <div class="composer">
+        <textarea id="prompt" placeholder="Escreva o que você quer criar..."
+        onkeydown="handleEnter(event)"></textarea>
+        <div class="composer-bottom">
+          <span class="status" id="chatStatus">Modo demonstração</span>
+          <button class="btn" onclick="sendMessage()">Enviar ↑</button>
+        </div>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:12px">
+      O chat está em modo demonstração. Nenhuma API está conectada ainda.
+      Não insira chaves secretas neste HTML. A conexão real será configurada
+      depois por meio de um backend seguro.
+    </div>
+  </section>
+</main>
+
+<footer>AI Tools Hub · Descubra ferramentas, crie possibilidades.</footer>
+
+<script>
+const categories=[
+ {id:"programacao",name:"Programação",icon:"⌘",desc:"Código, sites, apps e depuração."},
+ {id:"estudos",name:"Estudos",icon:"📚",desc:"Aprender, pesquisar e praticar."},
+ {id:"imagem",name:"Imagens e design",icon:"🎨",desc:"Artes, ilustrações e design."},
+ {id:"escrita",name:"Escrita",icon:"✍️",desc:"Textos, ideias e revisão."},
+ {id:"video",name:"Vídeos e áudio",icon:"🎬",desc:"Vídeo, voz e edição multimídia."},
+ {id:"negocios",name:"Negócios",icon:"📈",desc:"Marketing, produtividade e trabalho."},
+ {id:"pesquisa",name:"Pesquisa",icon:"🔎",desc:"Informações, análise e descoberta."},
+ {id:"geral",name:"Assistentes gerais",icon:"✦",desc:"Assistentes para tarefas variadas."}
+];
+
+// Catálogo inicial ilustrativo. Os preços e recursos podem mudar.
+// "free" significa que há uma opção gratuita conhecida, não uso ilimitado.
+const tools=[
+ {name:"ChatGPT",initial:"C",category:"geral",price:"both",
+ desc:"Assistente para escrita, ideias, programação e análise.",
+ url:"https://chatgpt.com/"},
+ {name:"Claude",initial:"Cl",category:"programacao",price:"both",
+ desc:"Assistente útil para código, textos e análise de documentos.",
+ url:"https://claude.ai/"},
+ {name:"Gemini",initial:"G",category:"geral",price:"both",
+ desc:"Assistente para pesquisa, escrita, raciocínio e criação.",
+ url:"https://gemini.google.com/"},
+ {name:"DeepSeek",initial:"D",category:"programacao",price:"both",
+ desc:"Assistente com recursos de raciocínio e programação.",
+ url:"https://chat.deepseek.com/"},
+ {name:"GitHub Copilot",initial:"GH",category:"programacao",price:"both",
+ desc:"Assistência para programação no fluxo de desenvolvimento.",
+ url:"https://github.com/features/copilot"},
+ {name:"Replit",initial:"R",category:"programacao",price:"both",
+ desc:"Ambiente online para desenvolver e testar projetos.",
+ url:"https://replit.com/"},
+ {name:"Codeium / Windsurf",initial:"W",category:"programacao",price:"both",
+ desc:"Ferramentas de assistência para desenvolvimento de software.",
+ url:"https://windsurf.com/"},
+ {name:"Phind",initial:"P",category:"programacao",price:"both",
+ desc:"Busca e assistência orientadas a questões técnicas.",
+ url:"https://www.phind.com/"},
+ {name:"Perplexity",initial:"P",category:"pesquisa",price:"both",
+ desc:"Pesquisa com respostas apoiadas por fontes.",
+ url:"https://www.perplexity.ai/"},
+ {name:"NotebookLM",initial:"N",category:"estudos",price:"free",
+ desc:"Estudo e síntese a partir de fontes adicionadas.",
+ url:"https://notebooklm.google.com/"},
+ {name:"Khan Academy Khanmigo",initial:"K",category:"estudos",price:"paid",
+ desc:"Recursos educacionais com disponibilidade variável por região.",
+ url:"https://www.khanacademy.org/khan-labs"},
+ {name:"Canva",initial:"Ca",category:"imagem",price:"both",
+ desc:"Design, apresentações e recursos de criação visual.",
+ url:"https://www.canva.com/"},
+ {name:"Adobe Firefly",initial:"A",category:"imagem",price:"both",
+ desc:"Ferramentas de criação e edição de imagens.",
+ url:"https://firefly.adobe.com/"},
+ {name:"Leonardo AI",initial:"L",category:"imagem",price:"both",
+ desc:"Geração de imagens e recursos visuais.",
+ url:"https://leonardo.ai/"},
+ {name:"Ideogram",initial:"I",category:"imagem",price:"both",
+ desc:"Geração de imagens e artes com texto.",
+ url:"https://ideogram.ai/"},
+ {name:"Microsoft Designer",initial:"M",category:"imagem",price:"both",
+ desc:"Criação de designs e imagens assistida por IA.",
+ url:"https://designer.microsoft.com/"},
+ {name:"Grammarly",initial:"Gr",category:"escrita",price:"both",
+ desc:"Apoio para escrita, clareza e revisão textual.",
+ url:"https://www.grammarly.com/"},
+ {name:"DeepL Write",initial:"De",category:"escrita",price:"both",
+ desc:"Apoio para reformular e melhorar textos.",
+ url:"https://www.deepl.com/write"},
+ {name:"Jasper",initial:"J",category:"negocios",price:"paid",
+ desc:"Plataforma de apoio à produção de conteúdo de marketing.",
+ url:"https://www.jasper.ai/"},
+ {name:"Copy.ai",initial:"Co",category:"negocios",price:"both",
+ desc:"Ferramentas de conteúdo e fluxos de trabalho comerciais.",
+ url:"https://www.copy.ai/"},
+ {name:"Runway",initial:"Ru",category:"video",price:"both",
+ desc:"Ferramentas generativas para criação e edição de vídeo.",
+ url:"https://runwayml.com/"},
+ {name:"Pika",initial:"Pi",category:"video",price:"both",
+ desc:"Criação de vídeos com ferramentas generativas.",
+ url:"https://pika.art/"},
+ {name:"ElevenLabs",initial:"E",category:"video",price:"both",
+ desc:"Geração de voz e ferramentas de áudio.",
+ url:"https://elevenlabs.io/"},
+ {name:"Suno",initial:"S",category:"video",price:"both",
+ desc:"Criação de música com inteligência artificial.",
+ url:"https://suno.com/"},
+ {name:"Hugging Face",initial:"H",category:"pesquisa",price:"both",
+ desc:"Explore modelos, demonstrações e projetos de IA.",
+ url:"https://huggingface.co/"},
+ {name:"Mistral Le Chat",initial:"Mi",category:"geral",price:"both",
+ desc:"Assistente geral com recursos de escrita e raciocínio.",
+ url:"https://chat.mistral.ai/"},
+ {name:"Qwen Chat",initial:"Q",category:"programacao",price:"both",
+ desc:"Assistente com modelos para tarefas gerais e técnicas.",
+ url:"https://chat.qwen.ai/"},
+ {name:"Ollama",initial:"O",category:"programacao",price:"free",
+ desc:"Executa modelos compatíveis localmente em dispositivos suportados.",
+ url:"https://ollama.com/"}
+];
+
+const chatModels=[
+ {name:"ChatGPT",url:"https://chatgpt.com/"},
+ {name:"Claude",url:"https://claude.ai/"},
+ {name:"Gemini",url:"https://gemini.google.com/"},
+ {name:"DeepSeek",url:"https://chat.deepseek.com/"},
+ {name:"Mistral Le Chat",url:"https://chat.mistral.ai/"},
+ {name:"Qwen Chat",url:"https://chat.qwen.ai/"}
+];
+
+let activeCategory="";
+let selectedAI="ChatGPT";
+
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function init(){
+ document.getElementById("categories").innerHTML=categories.map(c=>`
+  <button class="category" onclick="chooseCategory('${c.id}')">
+   <div class="cat-icon">${c.icon}</div><h3>${c.name}</h3>
+   <p>${c.desc}</p>
+  </button>`).join("");
+
+ document.getElementById("categoryFilter").innerHTML=
+ '<option value="">Todas as categorias</option>'+
+ categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+
+ document.getElementById("chatAI").innerHTML=chatModels.map(m=>
+ `<option value="${m.name}">${m.name}</option>`).join("");
+
+ renderCatalog();
+}
+
+function chooseCategory(id){
+ activeCategory=id;
+ document.getElementById("categoryFilter").value=id;
+ document.getElementById("catalogTitle").textContent=
+ categories.find(c=>c.id===id)?.name||"Explorar ferramentas";
+ renderCatalog();
+ document.getElementById("catalogSection").scrollIntoView({behavior:"smooth"});
+}
+
+function goCatalog(){
+ document.getElementById("catalogSection").scrollIntoView({behavior:"smooth"});
+ renderCatalog();
+}
+
+function renderCatalog(){
+ const query=(document.getElementById("catalogSearch").value+" "+
+ document.getElementById("globalSearch").value).trim().toLowerCase();
+ const cat=document.getElementById("categoryFilter").value;
+ const price=document.getElementById("priceFilter").value;
+
+ const filtered=tools.filter(t=>{
+  const catName=categories.find(c=>c.id===t.category)?.name||"";
+  const matchesText=(t.name+" "+t.desc+" "+catName).toLowerCase().includes(query);
+  const matchesCat=!cat||t.category===cat;
+  const matchesPrice=!price||t.price===price;
+  return matchesText&&matchesCat&&matchesPrice;
+ });
+
+ document.getElementById("resultCount").textContent=
+ filtered.length+" ferramenta(s)";
+
+ document.getElementById("catalog").innerHTML=filtered.length?filtered.map(t=>{
+  const catName=categories.find(c=>c.id===t.category)?.name||t.category;
+  const priceLabel=t.price==="free"?"Plano gratuito":
+  t.price==="paid"?"Pago":"Grátis e pago";
+  const priceClass=t.price==="free"?"free":t.price==="paid"?"paid":"";
+  return `<article class="ai-card">
+   <div class="ai-top">
+    <div class="ai-logo">${escapeHTML(t.initial)}</div>
+    <div><h3>${escapeHTML(t.name)}</h3>
+    <div class="small">${escapeHTML(catName)}</div></div>
+   </div>
+   <span class="tag ${priceClass}">${priceLabel}</span>
+   <p>${escapeHTML(t.desc)}</p>
+   <div class="card-actions">
+    <button class="btn secondary" onclick="pickAI('${escapeHTML(t.name)}')">Selecionar</button>
+    <button class="btn" onclick="openTool('${escapeHTML(t.name)}')">Visitar ↗</button>
+   </div>
+  </article>`;
+ }).join(""):'<div class="empty">Nenhuma ferramenta encontrada. Tente outro termo ou filtro.</div>';
+}
+
+function openTool(name){
+ const tool=tools.find(t=>t.name===name);
+ if(tool&&/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}/i.test(tool.url)){
+  window.open(tool.url,"_blank","noopener,noreferrer");
+ }
+}
+
+function pickAI(name){
+ selectedAI=name;
+ const found=chatModels.some(m=>m.name===name);
+ if(found)document.getElementById("chatAI").value=name;
+ document.getElementById("selectedName").textContent=name;
+ showChat();
+ document.getElementById("chatStatus").textContent=found?
+ "Selecionada · aguardando conexão da API":
+ "Esta IA ainda não está no seletor do chat. Você pode visitar o site dela pelo catálogo.";
+}
+
+function selectAI(name){
+ selectedAI=name;
+ document.getElementById("selectedName").textContent=name;
+ document.getElementById("chatStatus").textContent=
+ "Selecionada · modo demonstração";
+}
+
+function showChat(){
+ document.getElementById("chatSection").scrollIntoView({behavior:"smooth"});
+}
+
+function addMessage(text,type){
+ const el=document.createElement("div");
+ el.className="msg "+type;
+ el.textContent=text;
+ document.getElementById("messages").appendChild(el);
+ document.getElementById("messages").scrollTop=
+ document.getElementById("messages").scrollHeight;
+}
+
+function sendMessage(){
+ const input=document.getElementById("prompt");
+ const text=input.value.trim();
+ if(!text)return;
+ addMessage(text,"user");
+ input.value="";
+ addMessage("O chat ainda está em modo demonstração. A IA selecionada foi "+
+ selectedAI+". Para receber respostas reais aqui dentro, precisamos conectar "+
+ "um backend seguro a uma API compatível. Nenhuma requisição foi enviada.","assistant");
+}
+
+function handleEnter(e){
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+}
+
+init();
+</script>
+</body>
+      </html>
+      
